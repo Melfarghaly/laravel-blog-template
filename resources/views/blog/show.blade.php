@@ -53,6 +53,20 @@
 										<li><a href="#"><span class="lnr lnr-calendar-full"></span>{{ $post->created_at->toFormattedDateString() }}</a></li>
 										<li><a href="#"><span class="lnr lnr-bubble"></span>06 Comments</a></li>
 									</ul>
+
+									<div>
+										<a href="{{ url('/posts') }}/{{ $post->id }}/edit" class="btn btn-info">Edit</a>
+										<a class="btn btn-danger" href="" 
+										    onclick="event.preventDefault();
+										             document.getElementById('delete-post').submit();">
+										    Delete
+										</a>
+										<form id="delete-post" action="{{ url('/posts') }}/{{ $post->id }}/delete" method="POST" style="display: none;">
+										    {{ csrf_field() }}
+										    @method('DELETE')
+										</form>
+									</div>
+
 									<div class="post-content">
 										{!! $post->content !!}
 									</div>

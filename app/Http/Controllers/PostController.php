@@ -30,6 +30,7 @@ class PostController extends Controller
     {
 
         $posts = Post::latest()->get();
+        // $posts = Post::latest()->paginate(2);
 
         // $archives = Post::archives();
 
@@ -82,6 +83,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         // dd($post);
+        $post = Post::findOrFail($post->id);
         return view('blog.show',compact('post'));
 
         // dd(str_slug($post->title));
@@ -96,6 +98,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $post = Post::findOrFail($post->id);
         return view('blog.edit', compact('post'));
     }
 
@@ -115,6 +118,7 @@ class PostController extends Controller
           'content' => 'required|min:5'
         ]);
 
+        $post = Post::findOrFail($post->id);
         $post->title    = request('title');
         $post->content  = request('content');
 
@@ -138,6 +142,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post = Post::findOrFail($post->id);
+        $post->delete();
+
+        return redirect('/posts');
     }
 }
