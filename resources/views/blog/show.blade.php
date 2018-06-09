@@ -49,19 +49,28 @@
 										<h3>{{ $post->title }}</h3>
 									{{-- </a> --}}
 									<ul class="meta pb-20">
-										<li><a href="#"><span class="lnr lnr-user"></span>Mark wiens</a></li>
+										<li><a href="#"><span class="lnr lnr-user"></span>{{ $post->user->name }}</a></li>
 										<li><a href="#"><span class="lnr lnr-calendar-full"></span>{{ $post->created_at->toFormattedDateString() }}</a></li>
-										<li><a href="#"><span class="lnr lnr-bubble"></span>06 Comments</a></li>
+										<li>
+											<a href="#">
+												<span class="lnr lnr-bubble"></span>
+												@if(count($post->comments) == 1)
+													{{ count($post->comments) }} Comment
+												@else
+													{{ count($post->comments) }} Comments
+												@endif
+											</a>
+										</li>
 									</ul>
 
 									<div>
-										<a href="{{ url('/posts') }}/{{ $post->id }}/edit" class="btn btn-info">Edit</a>
+										<a href="{{ url('/posts') }}/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>
 										<a class="btn btn-danger" href="" 
 										    onclick="event.preventDefault();
 										             document.getElementById('delete-post').submit();">
 										    Delete
 										</a>
-										<form id="delete-post" action="{{ url('/posts') }}/{{ $post->id }}/delete" method="POST" style="display: none;">
+										<form id="delete-post" action="{{ url('/posts') }}/{{ $post->slug }}/delete" method="POST" style="display: none;">
 										    {{ csrf_field() }}
 										    @method('DELETE')
 										</form>
@@ -99,7 +108,8 @@
 															<div class="single-comment justify-content-between d-flex">
 																<div class="user justify-content-between d-flex">
 																	<div class="thumb">
-																		<img src="{{ asset('img/blog/c3.jpg') }}" alt="">
+																		{{-- <img src="{{ asset('img/blog/c3.jpg') }}" alt=""> --}}
+																		<img src="{{ "https://www.gravatar.com/avatar/" . md5('weybansk@gmail.com') }}?d={{ urlencode(asset('img/blog/c3.jpg')) }}" alt="">
 																	</div>
 																	<div class="desc">
 																		<h5><a href="#">Emilly Blunt</a></h5>
@@ -111,7 +121,12 @@
 																	</div>
 																</div>
 																<div class="reply-btn">
-																	<a href="" class="btn-reply text-uppercase">reply</a>
+																	<a href="" class="btn-reply btn-danger text-uppercase" onclick="event.preventDefault();
+																	             document.getElementById('delete-comment').submit();">Delete</a>
+																	<form id="delete-comment" action="{{ url('/posts') }}/{{ $post->slug }}/comments/{{ $comment->id }}/delete" method="POST" style="display: none;">
+																	    {{ csrf_field() }}
+																	    @method('DELETE')
+																	</form>
 																</div>
 															</div>
 														</div>
@@ -138,7 +153,7 @@
 
 							<div class="comment-form">
 								<h4>Post Comment</h4>
-								<form method="POST" action="/posts/{{ $post->id }}/comments">
+								<form method="POST" action="/posts/{{ $post->slug }}/comments">
 									<div class="form-group form-inline">
 										@csrf()
 

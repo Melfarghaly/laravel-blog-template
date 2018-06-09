@@ -55,7 +55,7 @@ Route::delete('posts/{post}/delete', 'PostController@destroy');
 // Comments
 // Adding new comment
 Route::post('/posts/{post}/comments', 'CommentController@store');
-// Route::get('/posts/{post}/comments/{comment}', 'CommentsController@destroy');
+Route::delete('/posts/{post}/comments/{comment}/delete', 'CommentController@destroy');
 
 
 Auth::routes();

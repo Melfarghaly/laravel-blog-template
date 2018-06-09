@@ -15,13 +15,13 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->text('content');
             $table->timestamps();
         });
     }
-            // $tbale->integer('user_id');
             // $table->enum('type', ['standard', 'image', 'audio', 'video'])->default('standard');
             // $table->string('image')->nullable();
             // $table->string('video')->nullable();

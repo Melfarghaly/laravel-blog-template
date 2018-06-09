@@ -55,7 +55,7 @@
 					<li><a href="{{ url('/about') }}">About</a></li>
 					<li><a href="{{ url('/contact') }}">Contact</a></li>
 
-					@if(!Auth::guest())
+					@if(Auth::guest())
 						<li class="menu-has-children"><a href="javascript:;">Welcome, Guest</a>
 							<ul>
 								<li><a href="{{ url('/login') }}">Login</a></li>
@@ -63,7 +63,7 @@
 							</ul>
 						</li>
 					@else
-						<li class="menu-has-children"><a href="javascript:;">Welcome, User</a>
+						<li class="menu-has-children"><a href="javascript:;">Welcome, {{ Auth::user()->name }}</a>
 							<ul>
 								<li><a href="{{ route('create-post') }}">Create Post</a></li>
 

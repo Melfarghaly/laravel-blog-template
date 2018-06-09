@@ -13,6 +13,12 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){
+      $this->middleware('auth')->except(['destroy']);
+    }
+
+
     public function index()
     {
         //
@@ -49,6 +55,8 @@ class CommentController extends Controller
         $comment = new Comment;
         $comment->body      = request('body');
         $comment->post_id   = $post->id;
+        $comment->user_id   = auth()->id();
+
         $comment->save();
 
         return redirect()->back();
@@ -94,8 +102,14 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
-    {
-        //
+    public function destroy($post, $comment){
+      $comment = Comment::find($comment);
+
+      // delete comment
+      $comment->delete();
+      
+      // redirect to dashboard
+      // return $comment->name;
+      return redirect()->back();
     }
 }

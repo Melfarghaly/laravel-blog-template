@@ -16,10 +16,9 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function __construct(){
-      // $this->middleware('auth')->except(['index', 'archive', 'show']);
-    // }
-
+    public function __construct(){
+      $this->middleware('auth')->except(['index', 'archive', 'show']);
+    }
 
     public function index()
     {
@@ -64,10 +63,10 @@ class PostController extends Controller
 
         // Another Method of doing this is
         Post::create([
+          'user_id' => auth()->id(),
           'title'   => request('title'),
           'content' => request('content'),
           'slug'    => $slug->createSlug($request->title),
-          // 'user_id' => auth()->id()
         ]);
 
         // redirecting to another url
@@ -131,7 +130,7 @@ class PostController extends Controller
         $post->save();
 
         // redirecting to another url
-        return redirect('/posts/'.$post->id);
+        return redirect('/posts/'.$post->slug);
     }
 
     /**

@@ -67,7 +67,7 @@
 						{{-- <div class="map-wrap" style="width:100%; height: 445px;" id="map"></div> --}}
 
 						<div class="col-lg-8">
-							<form class="form-area contact-form" action="{{ url('/posts') }}/{{ $post->id }}" method="post">
+							<form class="form-area contact-form" action="{{ url('/posts') }}/{{ $post->slug }}" method="post">
 								<div class="row">
 									<div class="col-lg-12">
 
