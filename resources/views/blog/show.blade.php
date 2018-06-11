@@ -121,7 +121,7 @@
 																	</div>
 																</div>
 																<div class="reply-btn">
-																	<a href="" class="btn-reply btn-danger text-uppercase" onclick="event.preventDefault();
+																	<a href="#delete-comment" class="btn-reply btn-danger text-uppercase" onclick="event.preventDefault();
 																	             document.getElementById('delete-comment').submit();">Delete</a>
 																	<form id="delete-comment" action="{{ url('/posts') }}/{{ $post->slug }}/comments/{{ $comment->id }}/delete" method="POST" style="display: none;">
 																	    {{ csrf_field() }}
@@ -158,10 +158,10 @@
 										@csrf()
 
 										<div class="form-group col-lg-6 col-md-12 name">
-											<input type="text" class="form-control" id="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
+											<input type="text" class="form-control" id="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'" value="{{ auth()->check()? auth()->user()->name : "" }}" {{ auth()->check()? "readonly=''": "" }}">
 										</div>
 										<div class="form-group col-lg-6 col-md-12 email">
-											<input type="email" class="form-control" id="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
+											<input type="email" class="form-control" id="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'" value="{{ auth()->check()? auth()->user()->email : "" }}" {{ auth()->check()? "readonly=''": "" }}">
 										</div>
 									</div>
 									{{-- <div class="form-group">

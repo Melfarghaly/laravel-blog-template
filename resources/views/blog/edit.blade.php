@@ -31,12 +31,15 @@
 		tinymce.init({ 
 			selector:'#content',
 			branding: false,
-			menubar: false,
+			menubar: "",
 			theme: "modern",
-			plugins: 'wordcount lists textcolor code link table',
+			height: "320",
+			plugins: 'wordcount lists textcolor code link table anchor preview autolink emoticons hr image media pagebreak spellchecker',
 			// content_css: ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i', '//www.tinymce.com/css/codepen.min.css'],
-			toolbar1: 'formatselect | undo redo | bold italic underline forecolor | link',
-			toolbar2: 'alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | table code preview'
+			toolbar1: 'formatselect | undo redo | bold italic underline forecolor | link anchor emoticons image media pagebreak spellchecker',
+			toolbar2: 'alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | table code preview',
+			default_link_target: "_blank",
+			spellchecker_languages: 'English=en'
 		});
 	</script>
 @endsection

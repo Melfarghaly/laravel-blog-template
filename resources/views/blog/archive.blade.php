@@ -4,6 +4,56 @@
 		Archives
 @endsection
 
+@section('head')
+		<style>
+			.pagination {
+				display: -webkit-box;
+			  display: -moz-box;
+			  display: -ms-flexbox;
+		    display: flex;
+		    padding-left: 0;
+		    list-style: none;
+		    border-radius: 0.25rem;
+		    margin-top: 5px;
+		    margin-bottom: 5px;
+		    justify-content: center;
+		    align-items: center;
+		    font-size: 14px;
+			}
+			.page-link {
+		    position: relative;
+		    display: block;
+		    padding: 0.5rem 0.75rem;
+		    margin-left: -1px;
+		    line-height: 1.25;
+		    color: #222;
+		    background-color: #ecf0f1;
+		    border: 1px solid #dee2e6;
+		    -webkit-transition: all 0.3s ease 0s;
+        -moz-transition: all 0.3s ease 0s;
+        -o-transition: all 0.3s ease 0s;
+        transition: all 0.3s ease 0s;
+			}
+			.page-link:focus {
+			    z-index: 2;
+			    outline: 0;
+			    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+			}
+			.page-link:hover {
+			    color: #fff;
+			    text-decoration: none;
+			    background-color: #f6214b;
+			    border-color: #dee2e6;
+			}
+			.page-item.active .page-link {
+		    z-index: 1;
+		    color: #fff;
+		    background-color: #f6214b;
+		    border-color: #f6214b;
+			}
+		</style>
+@endsection
+
 @section('latest-post-wrap')
 		<div class="latest-post-wrap">
 			<h4 class="cat-title">Latest Posts</h4>
@@ -39,14 +89,15 @@
 									</li>
 								</ul>
 								<p class="excert">
-									{!! strip_tags($post->content) !!}
+									{!! substr(strip_tags($post->content), 0, 200) !!}
 								</p>
 							</div>
 						</div>
 				@endforeach
 
-				<div class="load-more">
-					<a href="#" class="primary-btn">Load More Posts</a>
+				<div class="load-more text-center">
+					{{-- <a href="#" class="primary-btn">Load More Posts</a> --}}
+					{!! $posts->render() !!}
 				</div>
 		
 			@else

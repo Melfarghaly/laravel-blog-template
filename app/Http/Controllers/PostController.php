@@ -28,8 +28,8 @@ class PostController extends Controller
     public function archive()
     {
 
-        $posts = Post::latest()->get();
-        // $posts = Post::latest()->paginate(2);
+        // $posts = Post::latest()->get();
+        $posts = Post::latest()->paginate(5);
 
         // $archives = Post::archives();
 

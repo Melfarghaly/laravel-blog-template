@@ -58,6 +58,7 @@
 					@if(Auth::guest())
 						<li class="menu-has-children"><a href="javascript:;">Welcome, Guest</a>
 							<ul>
+								<li><a href="{{ route('create-post') }}">Create Post</a></li>
 								<li><a href="{{ url('/login') }}">Login</a></li>
 								<li><a href="{{ url('/register') }}">Register</a></li>
 							</ul>
