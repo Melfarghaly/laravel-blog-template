@@ -80,6 +80,11 @@
 
 										<label for="title">Title:</label>
 										<input name="title" placeholder="Post Title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Post Title'" class="common-input mb-20 form-control" required="" type="text" value="{{ old('title') }}">
+
+										<label for="tags">Tags:</label>
+										{{-- pattern="^[a-z,]*" --}}
+										<input name="tags" placeholder="Post Tags" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Post Tags'" class="common-input mb-20 form-control" required="" type="text" value="{{ old('tags') }}">
+										<p class="help-block">ex: one,two,three</p>
 										
 										<label for="content">Content</label>
 										<textarea class="common-textarea form-control" name="content" id="content">{{ old('content') }}</textarea>

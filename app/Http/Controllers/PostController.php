@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 // Aditional
 use \App\Services\Slug;
+use Illuminate\Support\Facades\DB;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -52,13 +54,49 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $posts, Slug $slug)
+    public function store(Request $request, Post $posts, Slug $slug, Tag $tag)
     {
+        $post_tags = [];
+        // print_r($post_tags);
+
+        $tags_i = strtolower(request('tags'));
+        $tags_i = explode(',', $tags_i);
+
+        // Remove Empty elements
+        $tags_i = array_filter($tags_i, 'strlen');
+
+        foreach ($tags_i as $tag_i) {
+            $tag_i = trim($tag_i);
+            echo '<br>' . $tag_i . ' ';
+
+            // Check if it exists in Database   //
+            $db_tags = DB::table('tags')->where('name', $tag_i);
+
+            if ($db_tags->count()) {
+                //  If yes,   //
+                print_r($db_tags->first());
+
+            } else {
+                // If no, create the new tag   //
+                $new_tag = new Tag;
+                $new_tag->name = $tag_i;
+                $new_tag->save();
+                print_r(DB::table('tags')->where('name', $new_tag->name)->first());
+            }
+
+        }
+        echo "<br>";
+        print_r($post_tags);
+
+
+        dd(0);
 
         $this->validate(request(), [
-          'title' => 'required|min:5|max:190|unique:posts,title',
+          'title'   => 'required|min:5|max:190|unique:posts,title',
 
-          'content' => 'required|min:5'
+          'content' => 'required|min:5',
+
+          'tags'    => 'required|min:2'
         ]);
 
         // Another Method of doing this is
