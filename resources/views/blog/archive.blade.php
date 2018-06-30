@@ -56,7 +56,13 @@
 
 @section('latest-post-wrap')
 		<div class="latest-post-wrap">
-			<h4 class="cat-title">Latest Posts</h4>
+			<h4 class="cat-title">
+				@isset($tag)
+					Tag :: {{ ucfirst($tag->name) }}
+				@else
+					Latest Posts
+				@endisset
+			</h4>
 
 			@if(count($posts) > 0)
 				@foreach ($posts as $post)

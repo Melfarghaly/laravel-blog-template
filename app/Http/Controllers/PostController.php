@@ -29,11 +29,9 @@ class PostController extends Controller
 
     public function archive()
     {
-
-        // $posts = Post::latest()->get();
         $posts = Post::latest()->paginate(5);
-
         // $archives = Post::archives();
+        // return $posts;
 
         return view('blog.archive', compact('posts'));
     }
@@ -54,42 +52,8 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $posts, Slug $slug, Tag $tag)
+    public function store(Request $request, Post $post, Slug $slug, Tag $tag)
     {
-        $post_tags = [];
-        // print_r($post_tags);
-
-        $tags_i = strtolower(request('tags'));
-        $tags_i = explode(',', $tags_i);
-
-        // Remove Empty elements
-        $tags_i = array_filter($tags_i, 'strlen');
-
-        foreach ($tags_i as $tag_i) {
-            $tag_i = trim($tag_i);
-            echo '<br>' . $tag_i . ' ';
-
-            // Check if it exists in Database   //
-            $db_tags = DB::table('tags')->where('name', $tag_i);
-
-            if ($db_tags->count()) {
-                //  If yes,   //
-                print_r($db_tags->first());
-
-            } else {
-                // If no, create the new tag   //
-                $new_tag = new Tag;
-                $new_tag->name = $tag_i;
-                $new_tag->save();
-                print_r(DB::table('tags')->where('name', $new_tag->name)->first());
-            }
-
-        }
-        echo "<br>";
-        print_r($post_tags);
-
-
-        dd(0);
 
         $this->validate(request(), [
           'title'   => 'required|min:5|max:190|unique:posts,title',
@@ -99,16 +63,48 @@ class PostController extends Controller
           'tags'    => 'required|min:2'
         ]);
 
-        // Another Method of doing this is
-        Post::create([
+        $post_tags = [];    // Array for the tag attachments
+
+        $tags_i = strtolower(request('tags'));          // 
+        $tags_i = explode(',', $tags_i);                // Converts tags string to array
+        $tags_i = array_map('trim', $tags_i);           // Remove white spaces from individual elements
+        $tags_i = array_unique($tags_i);                // Remove duplicate elements
+        $tags_i = array_filter($tags_i, 'strlen');      // Remove Empty elements
+
+        foreach ($tags_i as $tag_i)
+        {
+            // Check if it exists in Database   //
+            // $db_tag = Tag::table('tags')->where('name', $tag_i);
+            $db_tag = Tag::where('name', $tag_i);
+
+            if ($db_tag->count()) {
+                //  If yes, Add to post_tags array
+                array_push($post_tags, $tag_i);
+
+            } else {
+                // If no, create the new tag
+                $new_tag = new Tag;
+                $new_tag->name = $tag_i;
+                $new_tag->save();
+                // Add to post_tags array
+                array_push($post_tags, $tag_i);
+            }
+        }
+        // print_r($post_tags);
+
+        $post = Post::create([
           'user_id' => auth()->id(),
           'title'   => request('title'),
           'content' => request('content'),
           'slug'    => $slug->createSlug($request->title),
-        ]);
 
-        // redirecting to another url
-        return redirect('/posts');
+        ]);
+        foreach ($post_tags as $post_tag) {
+            $tag = Tag::where('name', $post_tag)->first();
+            $post->tags()->attach($tag);
+        }
+
+        return redirect('/posts');        // redirecting to another url
     }
 
     /**
@@ -119,12 +115,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        // dd($post);
-        $post = Post::findOrFail($post->id);
+        // $post = Post::findOrFail($post->id);
         return view('blog.show',compact('post'));
-
-        // dd(str_slug($post->title));
-        // return Post::getRelatedSlugs('post-one');
     }
 
     /**
@@ -135,7 +127,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $post = Post::findOrFail($post->id);
+        // $post = Post::findOrFail($post->id);
         return view('blog.edit', compact('post'));
     }
 
@@ -151,18 +143,55 @@ class PostController extends Controller
         // Update the existing post//
         $this->validate(request(), [
           'title' => 'required|min:5|max:190',
-
-          'content' => 'required|min:5'
+          'content' => 'required|min:5',
+          'tags'    => 'required|min:2'
         ]);
+
+        $post_tags = [];    // Array for the tag attachments
+
+        $tags_i = strtolower(request('tags'));          // Converts all text to lowercase
+        $tags_i = explode(',', $tags_i);                // Converts tags string to array
+        $tags_i = array_map('trim', $tags_i);           // Remove white spaces from individual elements
+        $tags_i = array_unique($tags_i);                // Remove duplicate elements
+        $tags_i = array_filter($tags_i, 'strlen');      // Remove Empty and Null elements
+        
+        $tags_i = array_map(function ($var){
+            return str_slug($var, '-');
+        }, $tags_i);                                    // Sluggify the elements
+
+        foreach ($tags_i as $tag_i)
+        {
+            // Check if it exists in Database   //
+            // $db_tag = Tag::table('tags')->where('name', $tag_i);
+            $db_tag = Tag::where('name', $tag_i);
+
+            if ($db_tag->count()) {
+                //  If yes, Add to post_tags array
+                array_push($post_tags, $tag_i);
+
+            } else {
+                // If no, create the new tag
+                $new_tag = new Tag;
+                $new_tag->name = $tag_i;
+                $slug->createSlug($request->title);
+                $new_tag->save();
+                // Add to post_tags array
+                array_push($post_tags, $tag_i);
+            }
+        }
 
         $post = Post::findOrFail($post->id);
         $post->title    = request('title');
         $post->content  = request('content');
 
-        if ($post->slug != $request->slug)
-        {
+        if ($post->slug != $request->slug) {
             $post->slug    = $slug->createSlug($request->slug, $post->id);
-            // 'slug'    => $slug->createSlug($request->title),
+        }
+
+        $post->tags()->detach();    // Detach all Tags first
+        foreach ($post_tags as $post_tag) {
+            $tag = Tag::where('name', $post_tag)->first();
+            $post->tags()->attach($tag);
         }
 
         $post->save();
@@ -179,7 +208,12 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        $post = Post::findOrFail($post->id);
+        // Before deleting post //
+        // detach tags
+        $post->tags()->detach();
+        // delete comments
+        $post->comments()->delete();
+        // then delete the post
         $post->delete();
 
         return redirect('/posts');

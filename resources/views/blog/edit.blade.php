@@ -33,7 +33,7 @@
 			branding: false,
 			menubar: "",
 			theme: "modern",
-			height: "320",
+			height: "250",
 			plugins: 'wordcount lists textcolor code link table anchor preview autolink emoticons hr image media pagebreak spellchecker',
 			// content_css: ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i', '//www.tinymce.com/css/codepen.min.css'],
 			toolbar1: 'formatselect | undo redo | bold italic underline forecolor | link anchor emoticons image media pagebreak spellchecker',
@@ -85,6 +85,10 @@
 
 										<label for="slug">Slug:</label>
 										<input name="slug" placeholder="Post Slug" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Post Slug'" class="common-input mb-20 form-control" required="" type="text" value="{{ $post->slug }}">
+
+										<label for="tags">Tags:</label>
+										<input name="tags" placeholder="Post Tags" pattern="^[a-zA-Z\+\-# ]+(?:[ ,]+[a-zA-Z\+\-# ]+){0,5}$" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Post Tags'" class="common-input mb-20 form-control" required="" type="text" value="@foreach($post->tags as $tag){{ $tag->name }}@if($loop->iteration != $post->tags->count()){{','}}@endif @endforeach">
+										<p class="help-block">ex: one,two,three. Tag names must not contain spaces</p>
 
 										<label for="content">Content</label>
 										<textarea class="common-textarea form-control" name="content" id="content">{{ $post->content }}</textarea>

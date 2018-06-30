@@ -48,7 +48,19 @@
 									{{-- <a href="#"> --}}
 										<h3>{{ $post->title }}</h3>
 									{{-- </a> --}}
-									<ul class="meta pb-20">
+									<ul class="meta">
+										<li>
+											<span class="lnr lnr-tag"  style="font-size: 14px;"></span>
+											@foreach($post->tags as $tag)
+												<a class="badge text-dark" style="font-size: 12px;" href="{{ url('/posts/tags/'.$tag->name) }}">
+													{{ $tag->name }}@if($loop->iteration != $post->tags->count()){{','}}@endif
+												</a>
+											@endforeach
+
+										</li>
+									</ul>
+
+									<ul class="meta pb-10">
 										<li><a href="#"><span class="lnr lnr-user"></span>{{ $post->user->name }}</a></li>
 										<li><a href="#"><span class="lnr lnr-calendar-full"></span>{{ $post->created_at->toFormattedDateString() }}</a></li>
 										<li>
@@ -63,9 +75,9 @@
 										</li>
 									</ul>
 
-									<div>
-										<a href="{{ url('/posts') }}/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>
-										<a class="btn btn-danger" href="" 
+									<div class="pb-20">
+										<a href="{{ url('/posts') }}/{{ $post->slug }}/edit" class="btn btn-warning btn-sm" style="border-radius: 0;">Edit</a>
+										<a class="btn btn-danger btn-sm" style="border-radius: 0;" href="" 
 										    onclick="event.preventDefault();
 										             document.getElementById('delete-post').submit();">
 										    Delete
@@ -78,6 +90,25 @@
 
 									<div class="post-content">
 										{!! $post->content !!}
+									</div>
+
+									<div class="mt-20">
+										<!-- AddToAny BEGIN -->
+										<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+										{{-- <a class="a2a_dd" href="https://www.addtoany.com/share"></a> --}}
+										<a class="a2a_button_email"></a>
+										<a class="a2a_button_facebook"></a>
+										<a class="a2a_button_twitter"></a>
+										<a class="a2a_button_google_plus"></a>
+										<a class="a2a_button_linkedin"></a>
+										<a class="a2a_button_whatsapp"></a>
+										<a class="a2a_button_pocket"></a>
+										</div>
+										<script async src="https://static.addtoany.com/menu/page.js"></script>
+										<style type="text/css">
+											.a2a_svg, .a2a_count { border-radius: 0 !important;padding: 2px;}
+										</style>
+										<!-- AddToAny END -->
 									</div>
 								
 								<div class="navigation-wrap justify-content-between d-flex">
@@ -112,7 +143,7 @@
 																		<img src="{{ "https://www.gravatar.com/avatar/" . md5('weybansk@gmail.com') }}?d={{ urlencode(asset('img/blog/c3.jpg')) }}" alt="">
 																	</div>
 																	<div class="desc">
-																		<h5><a href="#">Emilly Blunt</a></h5>
+																		<h5><a href="#">{{ $comment->user->name }}</a></h5>
 																		{{-- <p class="date">December 4, 2017 at 3:12 pm </p> --}}
 																		<p class="date">{{ $comment->created_at->toFormattedDateString() }}</p>
 																		<p class="comment">

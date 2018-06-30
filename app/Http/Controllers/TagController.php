@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use \App\Services\Slug;
 
 class TagController extends Controller
 {
@@ -12,9 +14,15 @@ class TagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Tag $tag)
     {
-        //
+
+        // $tagcloud = Tag::all();
+        $tagcloud = Tag::has('posts')->orderBy('name')->get();
+
+        // $tag = Tag::with('posts')->find($tag);
+        $posts = Tag::find($tag->id)->posts()->latest()->paginate(10);
+        return view('blog.archive', compact('posts', 'tag', 'tagcloud'));
     }
 
     /**

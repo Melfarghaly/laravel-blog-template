@@ -11,6 +11,9 @@
 |
 */
 
+use App\Post;
+use App\Tag;
+
 // The Magazine Template
 Route::get('/template', function () {
 	return view('template.archive');
@@ -43,7 +46,7 @@ Route::get('posts/create', 'PostController@create')->name('create-post');
 // Store a post
 Route::post('/posts', 'PostController@store');
 // Display single Post
-Route::get('/posts/{post}', 'PostController@show');
+Route::get('/posts/{post}', 'PostController@show')->name('show-post');
 // edit existing posts
 Route::get('posts/{post}/edit', 'PostController@edit');
 // update existing post
@@ -54,6 +57,9 @@ Route::delete('posts/{post}/delete', 'PostController@destroy');
 
 // Comments
 // Adding new comment
+Route::get('/posts/{post}/comments', function (Post $post) {
+	return view('blog.show',compact('post'));
+});
 Route::post('/posts/{post}/comments', 'CommentController@store');
 Route::delete('/posts/{post}/comments/{comment}/delete', 'CommentController@destroy');
 
@@ -61,6 +67,18 @@ Route::delete('/posts/{post}/comments/{comment}/delete', 'CommentController@dest
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+// Tags
+Route::get('/posts/tags/{tag}', 'TagController@index');
+
+
+
+
+
+
+
+
 
 
 // Search

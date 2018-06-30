@@ -1,5 +1,19 @@
 <div class="sidebars-area">
 
+	@isset ($tagcloud)
+		<div class="single-sidebar-widget newsletter-widget">
+			<h6 class="title">Tag Cloud</h6>
+			<p>
+				    @foreach ($tagcloud as $tag)
+				    	<a href="{{ url('/posts/tags') }}/{{ $tag->name }}">{{ $tag->name }}</a>&nbsp;
+				    @endforeach
+			</p>
+		</div>
+	@endisset
+
+
+
+
 	<div class="single-sidebar-widget editors-pick-widget">
 		<h6 class="title">Editor’s Pick</h6>
 		<div class="editors-pick-post">
