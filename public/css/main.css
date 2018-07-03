@@ -2780,6 +2780,10 @@ body {
   background: rgba(0, 0, 0, 0.4);
 }
 
+.single-post-wrap .feature-img-thumb .overlay-bg:hover {
+    background: none;
+}
+
 .single-post-wrap .content-wrap {
   padding: 20px;
 }

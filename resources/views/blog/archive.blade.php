@@ -70,7 +70,7 @@
 							<div class="col-lg-5 post-left">
 								<div class="feature-img relative">
 									<div class="overlay overlay-bg"></div>
-									<img class="img-fluid" src="{{ asset('img/l1.jpg') }}" alt="">
+									<img class="img-fluid" src="{{ asset('storage/posts') }}/{{ $post->image }}" alt="">
 								</div>
 								<ul class="tags">
 									<li><a href="#">Lifestyle</a></li>

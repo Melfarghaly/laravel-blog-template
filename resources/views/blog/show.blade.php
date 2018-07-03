@@ -39,7 +39,7 @@
 							<div class="single-post-wrap">
 								<div class="feature-img-thumb relative">
 									<div class="overlay overlay-bg"></div>
-									<img class="img-fluid" src="{{ asset('img/f1.jpg') }}" alt="">
+									<img class="img-fluid" src="{{ asset('storage/posts') }}/{{ $post->image }}" alt="">
 								</div>
 								<div class="content-wrap">
 									<ul class="tags mt-10">

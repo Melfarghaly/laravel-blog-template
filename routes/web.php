@@ -16,7 +16,7 @@ use App\Tag;
 
 // The Magazine Template
 Route::get('/template', function () {
-	return view('template.archive');
+	return view('template.image-post');
 });
 
 

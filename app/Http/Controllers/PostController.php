@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use \App\Services\Slug;
 use Illuminate\Support\Facades\DB;
 use App\Tag;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -53,20 +54,6 @@ class PostController extends Controller
     public function store(Request $request, Post $post, Slug $slug, Tag $tag)
     {
 
-        // Upload and Store Image
-        if ($request->hasFile('image')) {
-          $uploaded_image       = $request->file('image');
-          $uploaded_image_full  = $uploaded_image->getClientOriginalName();
-          $uploaded_image_ext   = $uploaded_image->getClientOriginalExtension();
-          $uploaded_image_mime  = $uploaded_image->getClientMimeType();
-          $uploaded_image_size  = $uploaded_image->getClientSize();
-          return($uploaded_image_full);
-
-        } else {
-          $file_name_stored = null;
-        }
-
-
         $this->validate(request(), [
           'title'   => 'required|min:5|max:190|unique:posts,title',
 
@@ -109,11 +96,34 @@ class PostController extends Controller
         }
         // print_r($post_tags);
 
+
+
+        // Upload and Store Image
+        if ($request->hasFile('image')) {
+          $uploaded_image       = $request->file('image');
+          $uploaded_image_full  = $uploaded_image->getClientOriginalName();
+          $uploaded_image_name  = pathinfo($uploaded_image_full, PATHINFO_FILENAME);
+          $uploaded_image_ext   = $uploaded_image->getClientOriginalExtension();
+          // Not Used
+          // $uploaded_image_mime  = $uploaded_image->getClientMimeType();
+          // $uploaded_image_size  = $uploaded_image->getClientSize();
+
+          $file_name_stored     = $uploaded_image_name. '_' .time() . '.' . $uploaded_image_ext;
+          $path                 = $request->file('image')->storeAs('public/posts', $file_name_stored);
+          // return($path);
+
+        } else {
+          $file_name_stored = null;
+        }
+
+
+
         $post = Post::create([
           'user_id' => auth()->id(),
           'title'   => request('title'),
           'content' => request('content'),
           'slug'    => $slug->createSlug($request->title),
+          'image'   => $file_name_stored
 
         ]);
         foreach ($post_tags as $post_tag) {
@@ -196,6 +206,22 @@ class PostController extends Controller
             }
         }
 
+
+
+        // Upload and Store Image
+        if ($request->hasFile('image')) {
+          $uploaded_image       = $request->file('image');
+          $uploaded_image_full  = $uploaded_image->getClientOriginalName();
+          $uploaded_image_name  = pathinfo($uploaded_image_full, PATHINFO_FILENAME);
+          $uploaded_image_ext   = $uploaded_image->getClientOriginalExtension();
+          // Not Used
+          // $uploaded_image_mime  = $uploaded_image->getClientMimeType();
+          // $uploaded_image_size  = $uploaded_image->getClientSize();
+          $file_name_stored     = $uploaded_image_name. '_' .time() . '.' . $uploaded_image_ext;
+          $path                 = $request->file('image')->storeAs('public/posts', $file_name_stored);
+        }
+
+
         $post = Post::findOrFail($post->id);
         $post->title    = request('title');
         $post->content  = request('content');
@@ -208,6 +234,10 @@ class PostController extends Controller
         foreach ($post_tags as $post_tag) {
             $tag = Tag::where('name', $post_tag)->first();
             $post->tags()->attach($tag);
+        }
+
+        if ($request->hasFile('image')) {
+          $post->image    = $file_name_stored;
         }
 
         $post->save();
@@ -225,6 +255,11 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         // Before deleting post //
+        // delete image
+        if ($post->image != null) {
+          # delete image
+          Storage::delete('public/posts/'.$post->image);
+        }
         // detach tags
         $post->tags()->detach();
         // delete comments
