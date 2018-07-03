@@ -29,10 +29,8 @@ class PostController extends Controller
 
     public function archive()
     {
-        $posts = Post::latest()->paginate(5);
+        $posts = Post::latest()->paginate(7);
         // $archives = Post::archives();
-        // return $posts;
-
         return view('blog.archive', compact('posts'));
     }
 
@@ -55,12 +53,28 @@ class PostController extends Controller
     public function store(Request $request, Post $post, Slug $slug, Tag $tag)
     {
 
+        // Upload and Store Image
+        if ($request->hasFile('image')) {
+          $uploaded_image       = $request->file('image');
+          $uploaded_image_full  = $uploaded_image->getClientOriginalName();
+          $uploaded_image_ext   = $uploaded_image->getClientOriginalExtension();
+          $uploaded_image_mime  = $uploaded_image->getClientMimeType();
+          $uploaded_image_size  = $uploaded_image->getClientSize();
+          return($uploaded_image_full);
+
+        } else {
+          $file_name_stored = null;
+        }
+
+
         $this->validate(request(), [
           'title'   => 'required|min:5|max:190|unique:posts,title',
 
           'content' => 'required|min:5',
 
-          'tags'    => 'required|min:2'
+          'tags'    => 'required|min:2',
+
+          'image'   => 'image|nullable|image|mimes:jpg,jpeg,png,gif|max:1999'
         ]);
 
         $post_tags = [];    // Array for the tag attachments
@@ -71,10 +85,13 @@ class PostController extends Controller
         $tags_i = array_unique($tags_i);                // Remove duplicate elements
         $tags_i = array_filter($tags_i, 'strlen');      // Remove Empty elements
 
+        $tags_i = array_map(function ($var){
+            return str_slug($var, '-');
+        }, $tags_i);                                    // Sluggify the elements
+
         foreach ($tags_i as $tag_i)
         {
             // Check if it exists in Database   //
-            // $db_tag = Tag::table('tags')->where('name', $tag_i);
             $db_tag = Tag::where('name', $tag_i);
 
             if ($db_tag->count()) {
@@ -162,7 +179,6 @@ class PostController extends Controller
         foreach ($tags_i as $tag_i)
         {
             // Check if it exists in Database   //
-            // $db_tag = Tag::table('tags')->where('name', $tag_i);
             $db_tag = Tag::where('name', $tag_i);
 
             if ($db_tag->count()) {

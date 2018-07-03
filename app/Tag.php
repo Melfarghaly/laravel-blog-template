@@ -9,7 +9,7 @@ class Tag extends Model
 
 		public function getRouteKeyName()
     {
-        return 'name';
+        return 'name'; // Name is Sluggified by default, so no needto add a slug column
     }
 
 		public function posts()

@@ -70,7 +70,7 @@
 						{{-- <div class="map-wrap" style="width:100%; height: 445px;" id="map"></div> --}}
 
 						<div class="col-lg-8">
-							<form class="form-area contact-form" action="{{ url('/posts') }}" method="post">
+							<form class="form-area contact-form" action="{{ url('/posts') }}" method="post" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-lg-12">
 
@@ -85,6 +85,10 @@
 										<input name="tags" placeholder="Post Tags" pattern="^[a-zA-Z\+\-# ]+(?:[ ,]+[a-zA-Z\+\-# ]+){0,5}$" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Post Tags'" class="common-input mb-20 form-control" required="" type="text" value="{{ old('tags') }}">
 										<p class="help-block">ex: one,two,three. Tag names must not contain spaces</p>
 										
+										<label for="image">Post Image:</label>
+										<input name="image" type="file" class="common-input mb-20 form-control" value="">
+										<p><img src="{{ asset(old('image')) }}" alt=""></p>
+
 										<label for="content">Content</label>
 										<textarea class="common-textarea form-control" name="content" id="content">{{ old('content') }}</textarea>
 
