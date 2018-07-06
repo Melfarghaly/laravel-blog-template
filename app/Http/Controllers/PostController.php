@@ -24,8 +24,10 @@ class PostController extends Controller
     }
 
     public function index()
-    {
-        return view('blog.index');
+    { 
+        $latest = Post::latest()->limit(3)->get();
+
+        return view('blog.index', compact('latest'));
     }
 
     public function archive()

@@ -8,11 +8,9 @@
 				<div class="container no-padding">
 					<div class="row">
 						<div class="col-lg-8 post-list">
-
 							<!-- Start latest-post Area -->
 								@yield('latest-post-wrap')
 							<!-- End latest-post Area -->
-
 							
 							<!-- Start banner-ads Area -->
 							<div class="col-lg-12 ad-widget-wrap mt-30 mb-30">
