@@ -10,6 +10,7 @@ use \App\Services\Slug;
 use Illuminate\Support\Facades\DB;
 use App\Tag;
 use Illuminate\Support\Facades\Storage;
+use App\Category;
 
 class PostController extends Controller
 {
@@ -44,7 +45,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('blog.create');
+        $categories = Category::all();
+
+        return view('blog.create', compact('categories'));
     }
 
     /**
@@ -63,7 +66,9 @@ class PostController extends Controller
 
           'tags'    => 'required|min:2',
 
-          'image'   => 'image|nullable|image|mimes:jpg,jpeg,png,gif|max:1999'
+          'image'   => 'image|nullable|image|mimes:jpg,jpeg,png,gif|max:1999',
+
+          'category'=> 'required'
         ]);
 
         $post_tags = [];    // Array for the tag attachments
@@ -121,11 +126,12 @@ class PostController extends Controller
 
 
         $post = Post::create([
-          'user_id' => auth()->id(),
-          'title'   => request('title'),
-          'content' => request('content'),
-          'slug'    => $slug->createSlug($request->title),
-          'image'   => $file_name_stored
+          'user_id'     => auth()->id(),
+          'title'       => request('title'),
+          'content'     => request('content'),
+          'slug'        => $slug->createSlug($request->title),
+          'image'       => $file_name_stored,
+          'category_id' => request('category')
 
         ]);
         foreach ($post_tags as $post_tag) {

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $fillable = [
-        'title', 'content', 'slug', 'user_id', 'image'// 'tags'
+        'title', 'content', 'slug', 'user_id', 'image', 'category_id'
     ];
 
     public function getRouteKeyName()
@@ -30,5 +30,9 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
     
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
 }
