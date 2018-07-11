@@ -65,7 +65,6 @@ Route::delete('/posts/{post}/comments/{comment}/delete', 'CommentController@dest
 
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
 
 
@@ -73,17 +72,22 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/posts/tags/{tag}', 'TagController@index');
 
 
+
 // Categories
 // Show posts and select from differnt categories
 Route::get('/category', 'CategoryController@index');
-// Display a category and its posts
-Route::get('/category/{id}', 'CategoryController@show');
 // Create new category
-Route::get('/category/create-new-category', 'CategoryController@create');
+
+
+Route::get('/category/create', 'CategoryController@create');
 Route::post('/category', 'CategoryController@store');
-Route::get('/category/{id}/edit', 'CategoryController@edit');
-Route::patch('/category/{id}', 'CategoryController@update');
-Route::delete('/category/{id}', 'CategoryController@delete');
+// Display a category and its posts
+Route::get('/category/{category}', 'CategoryController@show');
+Route::get('/category/{category}/edit', 'CategoryController@edit');
+Route::patch('/category/{category}', 'CategoryController@update');
+Route::delete('/category/{category}', 'CategoryController@delete');
+
+
 
 
 

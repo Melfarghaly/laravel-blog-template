@@ -1,5 +1,5 @@
 @section('page')
-		Create Category
+		Update Category
 @endsection
 
 @section('head')
@@ -37,7 +37,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="hero-nav-area">
-								<h1 class="text-white">Create Category</h1>
+								<h1 class="text-white">Update Category</h1>
 								{{-- <p class="text-white link-nav"><a href="{{ route('home') }}">Home </a>  <span class="lnr lnr-arrow-right"></span><a href="{{ route('contact') }}">Contact Us </a></p> --}}
 							</div>
 						</div>
@@ -53,7 +53,7 @@
 						{{-- <div class="map-wrap" style="width:100%; height: 445px;" id="map"></div> --}}
 
 						<div class="col-lg-8">
-							<form class="form-area contact-form" action="{{ url('/category') }}" method="post" enctype="multipart/form-data">
+							<form class="form-area contact-form" action="{{ url('/category') }}/{{ $category->id }}" method="post" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-lg-12">
 
@@ -61,13 +61,15 @@
 
 										@csrf()
 
+										@method('PATCH')
+
 										<label for="name">Name:</label>
-										<input name="name" placeholder="Category Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Category Name'" class="common-input mb-20 form-control" required="" type="text" value="{{ old('name') }}">
+										<input name="name" placeholder="Category Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Category Name'" class="common-input mb-20 form-control" required="" type="text" value="{{ $category->name }}">
 
 										<label for="description">Description:</label>
-										<textarea class="common-textarea form-control" name="description" id="description" placeholder="Write a short description here...">{{ old('description') }}</textarea>
+										<textarea class="common-textarea form-control" name="description" id="description" placeholder="Write a short description here...">{{ $category->description }}</textarea>
 
-										<button class="primary-btn primary mt-20" style="float: right;" type="submit">Create</button>
+										<button class="primary-btn primary mt-20" style="float: right;" type="submit">Update</button>
 
 									</div>
 								</div>
