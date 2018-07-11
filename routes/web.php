@@ -73,11 +73,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/posts/tags/{tag}', 'TagController@index');
 
 
-
-
-
-
-
+// Categories
+// Show posts and select from differnt categories
+Route::get('/category', 'CategoryController@index');
+// Display a category and its posts
+Route::get('/category/{id}', 'CategoryController@show');
+// Create new category
+Route::get('/category/create-new-category', 'CategoryController@create');
+Route::post('/category', 'CategoryController@store');
+Route::get('/category/{id}/edit', 'CategoryController@edit');
+Route::patch('/category/{id}', 'CategoryController@update');
+Route::delete('/category/{id}', 'CategoryController@delete');
 
 
 

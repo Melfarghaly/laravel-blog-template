@@ -86,6 +86,15 @@
 										<label for="slug">Slug:</label>
 										<input name="slug" placeholder="Post Slug" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Post Slug'" class="common-input mb-20 form-control" required="" type="text" value="{{ $post->slug }}">
 
+										<label for="category">Category:</label>
+										<select name="category" id="category" class="common-input mb-20 form-control">
+											<option value="{{ $post->category->id }}" selected="">{{ ucfirst($post->category->name) }}</option>
+											<option value="0">-- Select a category --</option>
+											@foreach($categories as $category)
+												<option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
+											@endforeach
+										</select>
+
 										<label for="tags">Tags:</label>
 										<input name="tags" placeholder="Post Tags" pattern="^[a-zA-Z\+\-# ]+(?:[ ,]+[a-zA-Z\+\-# ]+){0,5}$" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Post Tags'" class="common-input mb-20 form-control" required="" type="text" value="@foreach($post->tags as $tag){{ $tag->name }}@if($loop->iteration != $post->tags->count()){{','}}@endif @endforeach">
 										<p class="help-block">ex: one,two,three. Tag names must not contain spaces</p>

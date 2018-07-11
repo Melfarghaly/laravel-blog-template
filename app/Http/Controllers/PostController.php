@@ -163,7 +163,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         // $post = Post::findOrFail($post->id);
-        return view('blog.edit', compact('post'));
+        $categories = Category::all();
+        return view('blog.edit', compact('post', 'categories'));
     }
 
     /**
@@ -177,9 +178,10 @@ class PostController extends Controller
     {
         // Update the existing post//
         $this->validate(request(), [
-          'title' => 'required|min:5|max:190',
+          'title'   => 'required|min:5|max:190',
           'content' => 'required|min:5',
-          'tags'    => 'required|min:2'
+          'tags'    => 'required|min:2',
+          'category'=> 'required'
         ]);
 
         $post_tags = [];    // Array for the tag attachments
@@ -233,6 +235,8 @@ class PostController extends Controller
         $post = Post::findOrFail($post->id);
         $post->title    = request('title');
         $post->content  = request('content');
+
+        $post->category_id = request('category');
 
         if ($post->slug != $request->slug) {
             $post->slug    = $slug->createSlug($request->slug, $post->id);

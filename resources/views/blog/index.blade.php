@@ -88,7 +88,7 @@
 									<img class="img-fluid" src="{{ asset('storage/posts') }}/{{ $post->image }}" alt="">
 								</div>
 								<ul class="tags">
-									<li><a href="#">Lifestyle</a></li>
+									<li><a href="{{ url('/category') }}/{{ $post->category['id'] }}">{{ ucfirst($post->category['name']) }}</a></li>
 								</ul>
 							</div>
 							<div class="col-lg-7 post-right">

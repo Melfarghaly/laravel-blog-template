@@ -43,7 +43,7 @@
 								</div>
 								<div class="content-wrap">
 									<ul class="tags mt-10">
-										<li><a href="{{ url('/category') }}">{{ ucfirst($post->category->name) }}</a></li>
+										<li><a href="{{ url('/category') }}/{{ $post->category->id }}">{{ ucfirst($post->category->name) }}</a></li>
 									</ul>
 									{{-- <a href="#"> --}}
 										<h3>{{ $post->title }}</h3>
