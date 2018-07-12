@@ -140,7 +140,7 @@
 																<div class="user justify-content-between d-flex">
 																	<div class="thumb">
 																		{{-- <img src="{{ asset('img/blog/c3.jpg') }}" alt=""> --}}
-																		<img src="{{ "https://www.gravatar.com/avatar/" . md5('weybansk@gmail.com') }}?d={{ urlencode(asset('img/blog/c3.jpg')) }}" alt="">
+																		<img src="{{ "https://www.gravatar.com/avatar/" . md5($comment->user->email) }}?d={{ urlencode(asset('img/blog/c3.jpg')) }}" alt="Profile">
 																	</div>
 																	<div class="desc">
 																		<h5><a href="#">{{ $comment->user->name }}</a></h5>
@@ -151,14 +151,18 @@
 																		</p>
 																	</div>
 																</div>
+
 																<div class="reply-btn">
-																	<a href="#delete-comment" class="btn-reply btn-danger text-uppercase" onclick="event.preventDefault();
-																	             document.getElementById('delete-comment').submit();">Delete</a>
-																	<form id="delete-comment" action="{{ url('/posts') }}/{{ $post->slug }}/comments/{{ $comment->id }}/delete" method="POST" style="display: none;">
-																	    {{ csrf_field() }}
-																	    @method('DELETE')
-																	</form>
+																	@role('admin|editor')
+																		<a href="#delete-comment" class="btn-reply btn-danger text-uppercase" onclick="event.preventDefault();
+																		             document.getElementById('delete-comment').submit();">Delete</a>
+																		<form id="delete-comment" action="{{ url('/posts') }}/{{ $post->slug }}/comments/{{ $comment->id }}/delete" method="POST" style="display: none;">
+																		    {{ csrf_field() }}
+																		    @method('DELETE')
+																		</form>
+																	@endrole
 																</div>
+
 															</div>
 														</div>
 													@endforeach
@@ -195,13 +199,13 @@
 											<input type="email" class="form-control" id="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'" value="{{ auth()->check()? auth()->user()->email : "" }}" {{ auth()->check()? "readonly=''": "" }}">
 										</div>
 									</div>
-									{{-- <div class="form-group">
-										<input type="text" class="form-control" id="subject" placeholder="Subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
-									</div> --}}
+
 									<div class="form-group">
 										<textarea class="form-control mb-10" rows="5" name="body" placeholder="Comment" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Comment'" required=""></textarea>
+
+										<p class="help-text"><b style="color: red;">Note*</b> The Moderator reserves the right to delete any inapropriate comment without trace.</p>
 									</div>
-									<button type="submit" class="primary-btn text-uppercase">Post Comment</button>
+									<button type="submit" class="primary-btn text-uppercase">Submit</button>
 								</form>
 							</div>
 

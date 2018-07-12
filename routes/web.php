@@ -57,9 +57,7 @@ Route::delete('posts/{post}/delete', 'PostController@destroy');
 
 // Comments
 // Adding new comment
-Route::get('/posts/{post}/comments', function (Post $post) {
-	return view('blog.show',compact('post'));
-});
+Route::get('/posts/{post}/comments', 'CommentController@show');
 Route::post('/posts/{post}/comments', 'CommentController@store');
 Route::delete('/posts/{post}/comments/{comment}/delete', 'CommentController@destroy');
 
@@ -77,8 +75,6 @@ Route::get('/posts/tags/{tag}', 'TagController@index');
 // Show posts and select from differnt categories
 Route::get('/category', 'CategoryController@index');
 // Create new category
-
-
 Route::get('/category/create', 'CategoryController@create');
 Route::post('/category', 'CategoryController@store');
 // Display a category and its posts

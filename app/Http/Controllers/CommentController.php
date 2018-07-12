@@ -68,9 +68,9 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show(Post $post)
     {
-        //
+        return view('blog.show',compact('post'));
     }
 
     /**

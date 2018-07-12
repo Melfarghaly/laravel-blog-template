@@ -24,7 +24,7 @@
 		<div class="container">
 			<div class="row justify-content-between align-items-center">
 				<div class="col-lg-4 col-md-4 col-sm-12 logo-left no-padding">
-					<a href="{{ route('home') }}">
+					<a href="{{ url('/') }}">
 						<img class="img-fluid" src="img/logo.png" alt="">
 						{{-- <h2>Solve All Problem</h2> --}}
 					</a>
@@ -58,7 +58,9 @@
 					@if(Auth::guest())
 						<li class="menu-has-children"><a href="javascript:;">Welcome, Guest</a>
 							<ul>
-								<li><a href="{{ route('create-post') }}">Create Post</a></li>
+								@can('create posts')
+									<li><a href="{{ route('create-post') }}">Create Post</a></li>
+								@endcan
 								<li><a href="{{ url('/login') }}">Login</a></li>
 								<li><a href="{{ url('/register') }}">Register</a></li>
 							</ul>
@@ -66,7 +68,9 @@
 					@else
 						<li class="menu-has-children"><a href="javascript:;">Welcome, {{ Auth::user()->name }}</a>
 							<ul>
-								<li><a href="{{ route('create-post') }}">Create Post</a></li>
+								@can('create posts')
+									<li><a href="{{ route('create-post') }}">Create Post</a></li>
+								@endcan
 
 								<li><a href="{{ route('home')}}">Dashboard</a></li>
 								<li>
