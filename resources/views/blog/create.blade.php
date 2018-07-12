@@ -83,7 +83,7 @@
 
 										<label for="category">Category:</label>
 										<select name="category" id="category" class="common-input mb-20 form-control">
-											<option value="0">-- Select a category --</option>
+											<option value="1">-- Select a category --</option>
 											
 											@foreach($categories as $category)
 												<option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
