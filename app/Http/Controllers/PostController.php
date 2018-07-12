@@ -162,6 +162,12 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+
+        if (!auth()->user()->can('edit all posts') && auth()->user()->id != $post->user->id) {
+          // return "Permission denied";
+          abort(401, "You dont have enough permissions to perform this action");
+        }
+
         // $post = Post::findOrFail($post->id);
         $categories = Category::all();
         return view('blog.edit', compact('post', 'categories'));

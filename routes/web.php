@@ -52,7 +52,7 @@ Route::get('posts/{post}/edit', 'PostController@edit');
 // update existing post
 Route::patch('posts/{post}', 'PostController@update');
 // delete a post
-Route::delete('posts/{post}/delete', 'PostController@destroy');
+Route::delete('posts/{post}', 'PostController@destroy');
 
 
 // Comments

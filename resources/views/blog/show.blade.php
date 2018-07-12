@@ -75,18 +75,29 @@
 										</li>
 									</ul>
 
+
+									@if(Auth::check())	
 									<div class="pb-20">
-										<a href="{{ url('/posts') }}/{{ $post->slug }}/edit" class="btn btn-warning btn-sm" style="border-radius: 0;">Edit</a>
-										<a class="btn btn-danger btn-sm" style="border-radius: 0;" href="" 
-										    onclick="event.preventDefault();
-										             document.getElementById('delete-post').submit();">
-										    Delete
-										</a>
-										<form id="delete-post" action="{{ url('/posts') }}/{{ $post->slug }}/delete" method="POST" style="display: none;">
-										    {{ csrf_field() }}
-										    @method('DELETE')
-										</form>
+
+										@if(auth()->user()->can('edit all posts') || (auth()->user()->id == $post->user->id))
+											<a href="{{ url('/posts') }}/{{ $post->slug }}/edit" class="btn btn-warning btn-sm" style="border-radius: 0;">Edit</a>
+										@endif
+
+										@if(auth()->user()->can('delete all posts') || (auth()->user()->id == $post->user->id))
+											<a class="btn btn-danger btn-sm" style="border-radius: 0;" href="" 
+											    onclick="event.preventDefault();
+											             document.getElementById('delete-post').submit();">
+											    Delete
+											</a>
+											<form id="delete-post" action="{{ url('/posts') }}/{{ $post->slug }}" method="POST" style="display: none;">
+											    {{ csrf_field() }}
+											    @method('DELETE')
+											</form>
+										@endif
+
 									</div>
+									@endif
+
 
 									<div class="post-content">
 										{!! $post->content !!}
@@ -203,7 +214,7 @@
 									<div class="form-group">
 										<textarea class="form-control mb-10" rows="5" name="body" placeholder="Comment" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Comment'" required=""></textarea>
 
-										<p class="help-text"><b style="color: red;">Note*</b> The Moderator reserves the right to delete any inapropriate comment without trace.</p>
+										<p class="help-text"><b style="color: red;">Disclaimer*</b> The Moderator reserves the right to delete any inapropriate comment without trace.</p>
 									</div>
 									<button type="submit" class="primary-btn text-uppercase">Submit</button>
 								</form>
