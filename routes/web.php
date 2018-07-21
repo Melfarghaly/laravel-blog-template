@@ -103,9 +103,11 @@ Route::delete('/recommended/posts/{post}', 'RecommendedPostController@destroy');
 // Profile
 Route::get('user/{user}/dashboard', 'ProfileController@index');
 Route::get('user/{user}/profile', 'ProfileController@show');
+Route::get('user/profile/create', 'ProfileController@create');
+Route::post('user/profile', 'ProfileController@store');
 Route::get('user/{user}/profile/edit', 'ProfileController@edit');
-Route::post('user/{user}/profile', 'ProfileController@store');
-
+Route::patch('user/profile', 'ProfileController@update');
+Route::delete('user/profile', 'ProfileController@delete');
 
 
 
