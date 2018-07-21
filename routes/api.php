@@ -14,5 +14,17 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user()->email;
+});
+
+Route::get('posts', function () {
+		return App\Post::with('category', 'tags', 'user')->latest()->get();
+});
+
+Route::get('users', function () {
+		return App\User::with('roles:name')->get();
+});
+
+Route::get('category', function () {
+		return App\Category::with('posts')->get();
 });

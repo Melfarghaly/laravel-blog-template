@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Tag;
 use Illuminate\Support\Facades\Storage;
 use App\Category;
+use App\RecommendedPost;
 
 class PostController extends Controller
 {
@@ -28,14 +29,37 @@ class PostController extends Controller
     { 
         $latest = Post::latest()->limit(3)->get();
 
-        return view('blog.index', compact('latest'));
+
+        $recommendedposts = RecommendedPost::select('post_id')->latest()->get();
+        $postarray = array();
+        foreach ($recommendedposts as $recommendedpost) {
+            array_push($postarray, $recommendedpost->post_id);
+        }
+        $postarray = implode(',', $postarray);
+        if (count($recommendedposts)){
+          $editorsPick = Post::whereRaw("id in ($postarray)")->limit(4)->get();
+        }
+
+
+        return view('blog.index', compact('latest', 'editorsPick'));
     }
 
     public function archive()
     {
         $posts = Post::latest()->paginate(7);
+
+        $recommendedposts = RecommendedPost::select('post_id')->latest()->get();
+        $postarray = array();
+        foreach ($recommendedposts as $recommendedpost) {
+            array_push($postarray, $recommendedpost->post_id);
+        }
+        $postarray = implode(',', $postarray);
+        if (count($recommendedposts)){
+          $editorsPick = Post::whereRaw("id in ($postarray)")->limit(4)->get();
+        }
+
         // $archives = Post::archives();
-        return view('blog.archive', compact('posts'));
+        return view('blog.archive', compact('posts', 'editorsPick'));
     }
 
     /**
@@ -150,8 +174,19 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+
+        // Check if Post if recommended
+        $rec = RecommendedPost::where('post_id', $post->id)->get();
+        if (count($rec) > 0) {
+          $recommended = true;
+        } else {
+          $recommended = false;
+        }
+
+        // dd($recommended);
+
         // $post = Post::findOrFail($post->id);
-        return view('blog.show',compact('post'));
+        return view('blog.show',compact('post', 'recommended'));
     }
 
     /**
@@ -272,6 +307,12 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+
+        if (!auth()->user()->can('edit all posts') && auth()->user()->id != $post->user->id) {
+          // return "Permission denied";
+          abort(401, "You dont have enough permissions to perform this action");
+        }
+
         // Before deleting post //
         // delete image
         if ($post->image != null) {

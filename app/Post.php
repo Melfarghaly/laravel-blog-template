@@ -10,6 +10,15 @@ class Post extends Model
         'title', 'content', 'slug', 'user_id', 'image', 'category_id'
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'id', 'user_id', 'category_id'
+    ];
+
     public function getRouteKeyName()
     {
         return 'slug';

@@ -95,6 +95,29 @@
 											</form>
 										@endif
 
+										@role('admin|editor')
+											@if ($recommended)
+												<a class="btn btn-secondary btn-sm" style="border-radius: 0;" href="" 
+												    onclick="event.preventDefault();
+												             document.getElementById('unrecommend-post').submit();">
+												    Don't Recommend
+												</a>
+												<form id="unrecommend-post" action="{{ url('/recommended/posts') }}/{{ $post->slug }}" method="POST" style="display: none;">
+												    {{ csrf_field() }}
+												    @method('DELETE')
+												</form>
+											@else
+												<a class="btn btn-success btn-sm" style="border-radius: 0;" href="" 
+												    onclick="event.preventDefault();
+												             document.getElementById('recommend-post').submit();">
+												    Recommend
+												</a>
+												<form id="recommend-post" action="{{ url('/recommended/posts') }}/{{ $post->slug }}" method="POST" style="display: none;">
+												    {{ csrf_field() }}
+												</form>
+											@endif
+										@endrole
+
 									</div>
 									@endif
 
@@ -151,7 +174,7 @@
 																<div class="user justify-content-between d-flex">
 																	<div class="thumb">
 																		{{-- <img src="{{ asset('img/blog/c3.jpg') }}" alt=""> --}}
-																		<img src="{{ "https://www.gravatar.com/avatar/" . md5($comment->user->email) }}?d={{ urlencode(asset('img/blog/c3.jpg')) }}" alt="Profile">
+																		<img src="{{ "https://www.gravatar.com/avatar/" . md5($comment->user->email) }}?d=mp&size=50" alt="Profile">
 																	</div>
 																	<div class="desc">
 																		<h5><a href="#">{{ $comment->user->name }}</a></h5>

@@ -13,6 +13,9 @@
 
 use App\Post;
 use App\Tag;
+// Recommended Posts
+use App\RecommendedPost;
+
 
 // The Magazine Template
 Route::get('/template', function () {
@@ -82,6 +85,27 @@ Route::get('/category/{category}', 'CategoryController@show');
 Route::get('/category/{category}/edit', 'CategoryController@edit');
 Route::patch('/category/{category}', 'CategoryController@update');
 Route::delete('/category/{category}', 'CategoryController@delete');
+
+
+
+
+
+// Recommended Posts
+Route::get('/recommended/posts', 'RecommendedPostController@index');
+Route::post('/recommended/posts/{post}', 'RecommendedPostController@store');
+Route::get('/recommended/posts/{post}', function (Post $post) {
+	return redirect("/posts/$post->slug");
+});
+Route::delete('/recommended/posts/{post}', 'RecommendedPostController@destroy');
+
+
+
+// Profile
+Route::get('user/{user}/dashboard', 'ProfileController@index');
+Route::get('user/{user}/profile', 'ProfileController@show');
+Route::get('user/{user}/profile/edit', 'ProfileController@edit');
+Route::post('user/{user}/profile', 'ProfileController@store');
+
 
 
 

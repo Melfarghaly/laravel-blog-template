@@ -27,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'updated_at'
     ];
 
     public function posts()
@@ -38,4 +38,5 @@ class User extends Authenticatable
     public function comments(){
       return $this->hasMany(Comment::class);
     }
+    
 }
