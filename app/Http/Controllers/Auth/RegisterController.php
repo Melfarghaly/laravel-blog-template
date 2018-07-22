@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 use Spatie\Permission\Traits\HasRoles;
+use App\Profile;
 
 class RegisterController extends Controller
 {
@@ -74,7 +75,14 @@ class RegisterController extends Controller
                     'password' => Hash::make($data['password']),
                 ]);
 
+        // Assign Role of Reader to A new user on Registration
         $user->assignRole('reader');
+
+        // Create a Profile for a new user on registration
+        Profile::create([
+            'user_id'   => $user->id,
+            'username'  => "user".rand(10000,99999)
+        ]);
         
         return $user;
     }

@@ -109,6 +109,9 @@ Route::get('user/{user}/profile/edit', 'ProfileController@edit');
 Route::patch('user/profile', 'ProfileController@update');
 Route::delete('user/profile', 'ProfileController@delete');
 
+// Admin Route
+// Route::get('admin/{user}', 'AdminController@show');
+
 
 
 
