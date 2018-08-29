@@ -101,17 +101,24 @@ Route::delete('/recommended/posts/{post}', 'RecommendedPostController@destroy');
 
 
 // Profile
-Route::get('user/{user}/dashboard', 'ProfileController@index');
-Route::get('user/{user}/profile', 'ProfileController@show');
-Route::get('user/profile/create', 'ProfileController@create');
-Route::post('user/profile', 'ProfileController@store');
-Route::get('user/{user}/profile/edit', 'ProfileController@edit');
-Route::patch('user/profile', 'ProfileController@update');
-Route::delete('user/profile', 'ProfileController@delete');
+// Route::get('user/{user}/dashboard', 'ProfileController@index');
+// Route::get('user/{user}/profile', 'ProfileController@show');
+// Route::get('user/profile/create', 'ProfileController@create');
+// Route::post('user/profile', 'ProfileController@store');
+// Route::get('user/{user}/profile/edit', 'ProfileController@edit');
+// Route::patch('user/profile', 'ProfileController@update');
+// Route::delete('user/profile', 'ProfileController@delete');
 
 // Admin Route
-// Route::get('admin/{user}', 'AdminController@show');
+Route::get('admin', 'AdminController@index');
 
+// User Management
+Route::get('admin/users', 'AdminController@users');
+Route::get('admin/users/add', 'AdminController@usersAdd');
+Route::post('admin/users/add', 'AdminController@usersSave');
+// Edit
+// Route::patch('admin/users/{user}', 'AdminController@usersUpdate');
+Route::delete('admin/users/{user}', 'AdminController@usersDelete');
 
 
 
