@@ -3,7 +3,7 @@
     <div class="alert alert-danger alert-dismissible fade show">
       <ul>
         @foreach ($errors->all() as $error)
-          <li>{{ $error }}</li>
+          <li class="text-center">{{ $error }}</li>
         @endforeach
       </ul>
 

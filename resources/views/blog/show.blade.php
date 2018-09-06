@@ -1,6 +1,15 @@
 @section('page')
 		{{ $post->title }}
 @endsection
+@section('head')
+	<style type="text/css">
+		@media (max-width: 768px) {
+			#form-cover .primary-btn{
+				display: block;
+			}
+		}
+	</style>
+@endsection
 @include('include.header')
 @include('include.link-head-menu')
 		
@@ -222,7 +231,19 @@
 
 							<div class="comment-form">
 								<h4>Post Comment</h4>
-								<form method="POST" action="/posts/{{ $post->slug }}/comments">
+								<form method="POST" action="/posts/{{ $post->slug }}/comments" style="position: relative;">
+									
+									@guest
+										<div id="form-cover" class="text-center" style="z-index: 100;position: absolute;top: 0;right: 0;left: 0;bottom: 0;background-color: #bdbdbdba;padding: 10% 10%;">
+											<h4 class="text-center">Only Logged in users can comment on this post</h4>
+											<p class="text-center">
+												<a href="{{ route('login') }}" class="primary-btn text-uppercase" style="margin-bottom: 5px;">Login</a>
+												<span style="color: #333; font-weight: bold;margin-left: 10px;margin-right: 10px;">OR</span> 
+												<a href="{{ route('register') }}" class="primary-btn text-uppercase" style="margin-bottom: 5px;">Signup</a>
+											</p>
+										</div>
+									@endguest
+
 									<div class="form-group form-inline">
 										@csrf()
 
@@ -239,7 +260,9 @@
 
 										<p class="help-text"><b style="color: red;">Disclaimer*</b> The Moderator reserves the right to delete any inapropriate comment without trace.</p>
 									</div>
+									@auth
 									<button type="submit" class="primary-btn text-uppercase">Submit</button>
+									@endauth
 								</form>
 							</div>
 

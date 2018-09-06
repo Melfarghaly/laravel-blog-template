@@ -35,6 +35,10 @@ Route::get('/contact', function () {
 })->name('contact');
 Route::redirect('/contact-us', '/contact');
 
+// Sending of mails on contact page form
+Route::post('/contact', 'HomeController@contactmail');
+
+
 // Category, Archive, Posts
 
 
@@ -66,7 +70,7 @@ Route::delete('/posts/{post}/comments/{comment}/delete', 'CommentController@dest
 
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@index')->name('home');
 
 
 // Tags

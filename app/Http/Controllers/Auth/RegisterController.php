@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 
 use Spatie\Permission\Traits\HasRoles;
 use App\Profile;
+use App\Mail\Signup;
 
 class RegisterController extends Controller
 {
@@ -34,7 +35,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -83,6 +84,8 @@ class RegisterController extends Controller
             'user_id'   => $user->id,
             'username'  => "user".rand(10000,99999)
         ]);
+
+        /Mail::to($user)->send(new Signup($user));
         
         return $user;
     }

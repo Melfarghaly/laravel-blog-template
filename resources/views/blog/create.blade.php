@@ -70,14 +70,13 @@
 						{{-- <div class="map-wrap" style="width:100%; height: 445px;" id="map"></div> --}}
 
 						<div class="col-lg-8">
-							<form class="form-area contact-form" action="{{ url('/posts') }}" method="post" enctype="multipart/form-data">
-								<div class="row">
-									<div class="col-lg-12">
 
 										@include('include.form-error')
 
+							<form class="form-area contact-form" action="{{ url('/posts') }}" method="post" enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-lg-12">
 										@csrf()
-
 										<label for="title">Title:</label>
 										<input name="title" placeholder="Post Title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Post Title'" class="common-input mb-20 form-control" required="" type="text" value="{{ old('title') }}">
 
