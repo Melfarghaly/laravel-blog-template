@@ -26,7 +26,7 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'role:admin']);
     }
 
     public function index()
@@ -72,25 +72,36 @@ class AdminController extends Controller
             'username'  => "user".rand(10000,99999)
         ]);
 
-        return view('admin.users.index');
+        // return view('admin.users.index');
+        session()->flash('success', 'User was successfully created');
+        return redirect('/admin/users/add');
     }
 
     public function usersDelete(User $user)
     {
 
-        return $user->profile;
+        // return $user->roles;
 
         // Before deleting user
         // Remove Role
-        $roles = $user->roles;
+        $roles = $user->roles; //This will return an Eloquent collection instead of a Spatie\Permission\Contracts\Role interface
         $user->removeRole($roles);
+
         // Delete Profile
         $user->profile->delete();
 
-        // Then delete the user
-        // $user->delete();
+        // Delete all comments
+        $user->comments->delete();
+        // Delete all Post
+        $user->posts->delete();
 
-        // return view('admin.users.index');
+        // Then delete the user
+        $user->delete();
+        // Because user might have post we wont be deleting the user completely
+
+        session()->flash('success', 'User was deleted successfully');
+
+        return redirect()->back();
     }
 
     /**
