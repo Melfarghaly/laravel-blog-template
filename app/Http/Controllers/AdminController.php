@@ -80,20 +80,22 @@ class AdminController extends Controller
     public function usersDelete(User $user)
     {
 
-        // return $user->roles;
 
         // Before deleting user
         // Remove Role
-        $roles = $user->roles; //This will return an Eloquent collection instead of a Spatie\Permission\Contracts\Role interface
-        $user->removeRole($roles);
+        // $roles = $user->roles; //This will return an Eloquent collection instead of a Spatie\Permission\Contracts\Role interface
+        $user->syncRoles([]); // An empty set will remove all roles and add none back(empty array)
 
         // Delete Profile
-        $user->profile->delete();
-
+        if (($user->profile))
+        {
+            $user->profile->delete();
+        }
+        
         // Delete all comments
-        $user->comments->delete();
+        $user->comments()->delete();
         // Delete all Post
-        $user->posts->delete();
+        $user->posts()->delete();
 
         // Then delete the user
         $user->delete();
