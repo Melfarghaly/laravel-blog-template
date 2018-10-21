@@ -85,7 +85,7 @@ class RegisterController extends Controller
             'username'  => "user".rand(10000,99999)
         ]);
 
-        \Mail::to($user)->send(new Signup($user));
+        \Mail::to($user->email, $user->name)->send(new Signup($user));
         
         return $user;
     }

@@ -2,17 +2,17 @@
 
 namespace App\Mail;
 
-use App\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class Signup extends Mailable
+class ContactConfirm extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public $request;
+
     public $subject;
 
     /**
@@ -20,11 +20,10 @@ class Signup extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct()
     {
-        //
-        $this->user = $user;
-        $this->subject = "Welcome On-Board";
+        $this->request = $request;
+        $this->subject = 'Thank you for your feedback';
     }
 
     /**
@@ -34,7 +33,7 @@ class Signup extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->subject)
-                    ->view('emails.signup');
+        return $this->subject($subject)
+                    ->view('emails.contact_confirm');
     }
 }

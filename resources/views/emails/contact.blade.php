@@ -2,16 +2,19 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Signup</title>
+	<title>{{ $request->subject }}</title>
 </head>
 <body>
 
 	<h1>Contact Form</h1>
 
-	{{ $request->name }}<br>
-	{{ $request->email }}<br>
-	{{ $request->subject }}<br>
-	{{ $request->message }}<br>
+	<p> Email From {{ $request->name }} ({{ $request->email }})</p>
+
+	<p><strong>Subject:</strong> {{ $request->subject }}</p>
+
+	<p>Message:</p>
+
+	<p>{{ $request->message }}</p>
 	
 </body>
 </html>

@@ -50,18 +50,11 @@ class HomeController extends Controller
         // return new \App\Mail\Contact($request);
 
         // Send a Mail to the Help Desk <helpdesk@example.com>
-        \Mail::to('helpdesk@example.com', 'Help Desk')->send(new Contact($request));
+        \Mail::to(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))->send(new Contact($request));
         // Then
         // Send a mail to the user, tell them their mail has been recieved
-        // \Mail::to($request->email, $request->name)->from('helpdesk@example.com', 'Help Desk')->send(new Contactconfirm($request));
-        // 
-        // $message = [
-        //     'subject' = '',
-        //     'body' = ''
-        // ];
-        // \Mail::raw('hello world', function($message) {
-        //     $message->subject('message subject')->to('test@example.org');
-        // });
+        \Mail::to($request->email, $request->name)->send(new ContactConfirm($request));
+        
 
         session()->flash('success', 'Message Sent');
         session()->flash('message', 'We will get back to you in no time');

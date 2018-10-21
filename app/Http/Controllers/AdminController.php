@@ -87,7 +87,7 @@ class AdminController extends Controller
         $user->syncRoles([]); // An empty set will remove all roles and add none back(empty array)
 
         // Delete Profile
-        if (($user->profile))
+        if ($user->profile)
         {
             $user->profile->delete();
         }

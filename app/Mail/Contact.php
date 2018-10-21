@@ -14,6 +14,8 @@ class Contact extends Mailable
 
     public $request;
 
+    public $subject;
+
     /**
      * Create a new message instance.
      *
@@ -23,6 +25,7 @@ class Contact extends Mailable
     {
         //
         $this->request = $request;
+        $this->subject = 'Contact Form: ' . $request->subject;
     }
 
     /**
@@ -32,7 +35,9 @@ class Contact extends Mailable
      */
     public function build()
     {
+
         return $this->from($this->request->email, $this->request->name)
+                    ->subject($this->subject)
                     ->view('emails.contact');
     }
 }
