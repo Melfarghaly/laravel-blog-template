@@ -12,16 +12,15 @@
 */
 
 use App\Post;
-use App\Tag;
-// Recommended Posts
 use App\RecommendedPost;
+use App\Tag;
+use Illuminate\Http\Request;
 
 
 // The Magazine Template
 Route::get('/template', function () {
 	return view('template.image-post');
 });
-
 
 
 // Main Route
@@ -129,10 +128,19 @@ Route::delete('admin/users/{user}', 'AdminController@usersDelete');
 
 // Search
 Route::get('/search', function(Request $request){
-	// return "Searching...for...".request('search');
+	// return $request;
 
-	$results = DB::select('select * from posts where title = ?', [request('search')]);
+	if (strlen($request->search) < 2 OR empty($request->search)) {
+		abort(404);
+	}
+
+	$results = DB::select("select * from posts where title like '%$request->search%' order by created_at DESC");
 
 	return $results;
 
 });
+
+
+// Testing Ajax Request
+Route::get('ajax', 'AjaxController@index');
+Route::post('ajax', 'AjaxController@ajaxRequest');
